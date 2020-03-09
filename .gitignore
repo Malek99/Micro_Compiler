@@ -1,5 +1,8 @@
-/bin/
+bin/
+Examples/
 antlr_outputs/
 *.class
 .project
 .classpath
+out
+*.zip

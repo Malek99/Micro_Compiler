@@ -1,41 +1,37 @@
 import java.io.IOException;
-import java.util.List;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.CommonTokenStream;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 		// read input MICRO code
+		
+		
 
-		if(args.length == 0)
-		{
-			System.out.println("You should specify the input .micro file");
+		if (args.length != 1) {
+			System.out.println("Error: expected one argument, the .micro file");
 			System.exit(0);
 		}
-		
-		CharStream input = null;
-		try {
-			input = CharStreams.fromFileName(args[0]);
 
+		MicroLexer lexer = null;
+		try {
+			CharStream input = CharStreams.fromFileName(args[0]);
+			lexer = new MicroLexer(input);
 		} catch (IOException e) {
 			System.out.println("can't open " + args[0]);
 			System.exit(0);
 		}
 
-		MicroLexer lexer = new MicroLexer(input);
+		MicroParser parser = new MicroParser(new CommonTokenStream(lexer));
+		parser.program();
 
-		
-
-		List<? extends Token> tokens = lexer.getAllTokens();
-		System.out.println("Number of tokens: " + tokens.size());
-
-		for (int i = 0; i < tokens.size(); i++) {
-			Token t = tokens.get(i);
-			System.out.println(/*"Token Type: " +*/ lexer.getVocabulary().getSymbolicName(t.getType()) + "\n"
-					+ /*"Value: " +*/ t.getText()+"\n");
+		if (parser.getNumberOfSyntaxErrors() == 0) {
+			System.out.println("accepted");
+		} else {
+			System.out.println("not accepted");
 		}
 
 	}
