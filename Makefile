@@ -1,14 +1,17 @@
+ANTLR_LIB=/usr/local/lib/antlr-4.8-complete.jar
+SUBMISSION_ARCHIVE=step3.zip
+ANTLR_OPTIONS=-no-listener -visitor
+
 class_files: antlr_files
-	javac -cp .:/usr/local/lib/antlr-4.8-complete.jar src/*.java Test/*.java -d bin/
+	javac -cp .:$(ANTLR_LIB) src/*.java Test/*.java -d bin/
 
 antlr_files:
-	java -jar /usr/local/lib/antlr-4.8-complete.jar -no-listener Micro.g4 -o antlr_outputs/
+	java -jar $(ANTLR_LIB) $(ANTLR_OPTIONS) Micro.g4 -o antlr_outputs/
 	cp antlr_outputs/*.java src/
 
 
 submission:
-	zip step2.zip src/*.java README
+	zip $(SUBMISSION_ARCHIVE) src/*.java README
 
 clean:
-	rm -f bin/*class antlr_outputs/* submission.zip
-
+	rm -f bin/*class antlr_outputs/* $(SUBMISSION_ARCHIVE)

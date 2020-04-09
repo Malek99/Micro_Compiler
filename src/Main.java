@@ -1,5 +1,6 @@
 import java.io.IOException;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -8,7 +9,6 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		// read input MICRO code
-		
 		
 
 		if (args.length != 1) {
@@ -26,14 +26,22 @@ public class Main {
 		}
 
 		MicroParser parser = new MicroParser(new CommonTokenStream(lexer));
-		parser.program();
+		ParseTree Tree = parser.program();
 
-		if (parser.getNumberOfSyntaxErrors() == 0) {
-			System.out.println("accepted");
-		} else {
-			System.out.println("not accepted");
+		if (parser.getNumberOfSyntaxErrors() != 0) {
+			System.exit(0);
+		} 
+		
+		ScopeTree scopes = new SymbolTablesVisitor().visit(Tree);
+		
+		
+		
+		for(scopes.openRootScope(); scopes.hasNextScope(); scopes.moveToNextScope())
+		{
+			System.out.println("<<Scope " + scopes.getScopeName() + ">>");
+			System.out.println(scopes.getSymbolTable());
 		}
-
+				
 	}
 
 }
