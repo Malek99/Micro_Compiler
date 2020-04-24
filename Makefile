@@ -1,5 +1,5 @@
 ANTLR_LIB=/usr/local/lib/antlr-4.8-complete.jar
-SUBMISSION_ARCHIVE=step3.zip
+SUBMISSION_ARCHIVE=step4.zip
 ANTLR_OPTIONS=-no-listener -visitor
 
 class_files: antlr_files

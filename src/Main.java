@@ -1,5 +1,4 @@
 import java.io.IOException;
-
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -8,8 +7,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		// read input MICRO code
-		
 
 		if (args.length != 1) {
 			System.out.println("Error: expected one argument, the .micro file");
@@ -26,22 +23,21 @@ public class Main {
 		}
 
 		MicroParser parser = new MicroParser(new CommonTokenStream(lexer));
-		ParseTree Tree = parser.program();
+		ParseTree parseTree = parser.program();
 
 		if (parser.getNumberOfSyntaxErrors() != 0) {
 			System.exit(0);
-		} 
-		
-		ScopeTree scopes = new SymbolTablesVisitor().visit(Tree);
-		
-		
-		
-		for(scopes.openRootScope(); scopes.hasNextScope(); scopes.moveToNextScope())
-		{
-			System.out.println("<<Scope " + scopes.getScopeName() + ">>");
-			System.out.println(scopes.getSymbolTable());
 		}
-				
+
+		ScopeTree scopes = new SymbolTablesVisitor().visit(parseTree);
+
+		IRCode irCode = new IRVisitor(scopes).visit(parseTree);
+
+		for (IRStatement irStatement : irCode) {
+			System.out.println(irStatement.toString());
+		}
+		
+
 	}
 
 }

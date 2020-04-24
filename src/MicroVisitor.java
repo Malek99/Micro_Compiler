@@ -72,11 +72,19 @@ public interface MicroVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitId_tail(MicroParser.Id_tailContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MicroParser#func_declarations}.
+	 * Visit a parse tree produced by the {@code nextFunction}
+	 * labeled alternative in {@link MicroParser#func_declarations}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunc_declarations(MicroParser.Func_declarationsContext ctx);
+	T visitNextFunction(MicroParser.NextFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code noFunction}
+	 * labeled alternative in {@link MicroParser#func_declarations}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNoFunction(MicroParser.NoFunctionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MicroParser#func_decl}.
 	 * @param ctx the parse tree
@@ -194,6 +202,18 @@ public interface MicroVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCondition(MicroParser.ConditionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MicroParser#expr1}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpr1(MicroParser.Expr1Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link MicroParser#expr2}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpr2(MicroParser.Expr2Context ctx);
+	/**
 	 * Visit a parse tree produced by {@link MicroParser#compare}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -248,11 +268,33 @@ public interface MicroVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFactor(MicroParser.FactorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MicroParser#primary}.
+	 * Visit a parse tree produced by the {@code exprFactor}
+	 * labeled alternative in {@link MicroParser#primary}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrimary(MicroParser.PrimaryContext ctx);
+	T visitExprFactor(MicroParser.ExprFactorContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code intImmediateFactor}
+	 * labeled alternative in {@link MicroParser#primary}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntImmediateFactor(MicroParser.IntImmediateFactorContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code floatImmediateFactor}
+	 * labeled alternative in {@link MicroParser#primary}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloatImmediateFactor(MicroParser.FloatImmediateFactorContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code symbolFactor}
+	 * labeled alternative in {@link MicroParser#primary}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSymbolFactor(MicroParser.SymbolFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MicroParser#call_expr}.
 	 * @param ctx the parse tree

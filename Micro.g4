@@ -73,8 +73,8 @@ id_tail: 	 ',' variable_name=id id_tail 										// declaration
 
 // function declarations
 
-func_declarations:   func_decl func_declarations 
-					|
+func_declarations:   func_decl func_declarations 	#nextFunction
+					|								#noFunction
 					;
 
 func_decl: 'FUNCTION' func_type function_name=id '(' parameter_list ')' 'BEGIN' func_body 'END'; 			// function scope 
@@ -116,8 +116,8 @@ write_stmt: 'WRITE' '(' var_list ')';
 
 return_stmt: 'RETURN' expr;
 
-var_list: id var_list_tail;
-var_list_tail:   ',' id var_list_tail
+var_list: variable_name=id var_list_tail;
+var_list_tail:   ',' variable_name=id var_list_tail
 				|
 				;
 
@@ -127,11 +127,13 @@ var_list_tail:   ',' id var_list_tail
 
 if_stmt: 'IF' '(' condition ')' data_declarations stmt_list else_part 'ENDIF';				        // if scope
 
-else_part: 	 'ELSE' data_declarations stmt_list 	#elseRule										// else scope
-			|										#noElse
+else_part: 	 'ELSE' data_declarations myVar=stmt_list 	#elseRule										// else scope
+			|											#noElse
 			;											
 
-condition: expr compare expr;
+condition: expr1 compare expr2;
+expr1: expr;
+expr2: expr;
 
 compare: '=' | '!=' | '<' | '>' | '<=' | '>=';
 
@@ -152,19 +154,27 @@ incr_stmt: 	 assign_stmt
 
 
 
-// exressions
+// expressions
 
 expr: expr_prefix term;
 
-expr_prefix: expr_prefix term addop | ;
+expr_prefix: expr_prefix term op=addop 		
+			| 
+			;
 
 term: factor_prefix factor;
 
-factor_prefix: factor_prefix factor mulop | ;
+factor_prefix: 	factor_prefix factor op=mulop 
+				| 
+					;
 
 factor: primary | call_expr;
 
-primary: '(' expr ')' | INTLITERAL | FLOATLITERAL | id ;
+primary: 	'(' expr ')' 		#exprFactor
+			| INTLITERAL 		#intImmediateFactor
+			| FLOATLITERAL 		#floatImmediateFactor
+			| id 				#symbolFactor
+			;
 
 call_expr: id '(' expr_list ')';								// function call
 
@@ -175,3 +185,5 @@ expr_list_tail: ',' expr expr_list_tail | ;
 addop: '+' | '-';
 
 mulop: '*' | '/';
+
+

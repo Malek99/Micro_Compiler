@@ -65,13 +65,15 @@ class Symbol {
 
 class SymbolInfo {
 	private char type;
+	private int ID;
 	
 	
 	public SymbolInfo() {
 		type = 'u';
+		ID = 0;
 	}
 	
-	SymbolInfo(SymbolInfo type) {
+	SymbolInfo(SymbolInfo type, int ID) {
 		if(type.isString())
 			setTypeToString();
 		else if(type.isInt())
@@ -80,9 +82,14 @@ class SymbolInfo {
 			setTypeToFloat();
 		else
 			this.type = 'u';
+		
+		this.ID = ID;
 	}
 	
-
+	public int getID() {
+		return ID;
+	}
+	
 	public void setTypeToString() {
 		type = 's';
 	}

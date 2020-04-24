@@ -1,12 +1,12 @@
 public class SymbolTablesVisitor extends MicroBaseVisitor<ScopeTree> {
 
 	ScopeTree scopeTree;
-	SymbolInfo type;
+	SymbolInfo info;
 
 	// opening scopes
 	@Override
 	public ScopeTree visitProgram(MicroParser.ProgramContext ctx) {
-		type = new SymbolInfo();
+		info = new SymbolInfo();
 		scopeTree = new ScopeTree();
 		visitChildren(ctx);
 		scopeTree.closeScope();
@@ -55,21 +55,21 @@ public class SymbolTablesVisitor extends MicroBaseVisitor<ScopeTree> {
 
 	@Override
 	public ScopeTree visitDeclareInt(MicroParser.DeclareIntContext ctx) {
-		type.setTypeToInt();
+		info.setTypeToInt();
 		visitChildren(ctx);
 		return null;
 	}
 
 	@Override
 	public ScopeTree visitDeclareFloat(MicroParser.DeclareFloatContext ctx) {
-		type.setTypeToFloat();
+		info.setTypeToFloat();
 		visitChildren(ctx);
 		return null; 
 	}
 
 	@Override
 	public ScopeTree visitId_list(MicroParser.Id_listContext ctx) {
-		scopeTree.enterSymbol(ctx.variable_name.getText(), new SymbolInfo(type));
+		scopeTree.enterSymbol(ctx.variable_name.getText(), info);
 		visitChildren(ctx);
 		return null;
 	}
@@ -78,14 +78,14 @@ public class SymbolTablesVisitor extends MicroBaseVisitor<ScopeTree> {
 	public ScopeTree visitId_tail(MicroParser.Id_tailContext ctx) {
 		
 		if(ctx.variable_name != null)
-			scopeTree.enterSymbol(ctx.variable_name.getText(), new SymbolInfo(type));
+			scopeTree.enterSymbol(ctx.variable_name.getText(), info);
 		visitChildren(ctx);
 		return null;
 	}
 
 	@Override
 	public ScopeTree visitParameter_decl(MicroParser.Parameter_declContext ctx) {
-		scopeTree.enterSymbol(ctx.variable_name.getText(), new SymbolInfo(type));
+		scopeTree.enterSymbol(ctx.variable_name.getText(), info);
 		visitChildren(ctx);
 		return null;
 	}

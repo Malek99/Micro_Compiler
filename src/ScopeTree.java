@@ -1,3 +1,4 @@
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -27,12 +28,13 @@ public class ScopeTree {
 	}
 
 	private Scope root, currentScope;
-	private int blockID;
+	private int blockID, numberOfSymbols;
 
 	public ScopeTree() {
 		root = new Scope("Global");
 		currentScope = root;
 		blockID = 1;
+		numberOfSymbols = 0;
 	}
 
 	public void openScope() {
@@ -54,7 +56,8 @@ public class ScopeTree {
 	}
 
 	public void enterSymbol(String name, SymbolInfo info) {
-		currentScope.symbolTable.addSymbol(name, info);
+		numberOfSymbols++;
+		currentScope.symbolTable.addSymbol(name, new SymbolInfo(info, numberOfSymbols));
 	}
 
 	public SymbolInfo retrieveSymbol(String name) {
@@ -110,6 +113,19 @@ public class ScopeTree {
 	
 	public String getScopeName() {
 		return currentScope.name;
+	}
+	
+	public Hashtable<Integer, String> getGlobalSymbols() {
+		Hashtable<Integer, String> table = new Hashtable<Integer, String>();
+		
+		LinkedList<Symbol> symbols =  root.symbolTable.getAllSymbols();
+		Iterator<Symbol> it = symbols.iterator();
+		while(it.hasNext()) {
+			Symbol symbol = it.next();
+			table.put(symbol.info.getID(), symbol.name);
+		}
+		
+		return table;
 	}
 
 }
