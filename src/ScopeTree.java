@@ -57,7 +57,12 @@ public class ScopeTree {
 
 	public void enterSymbol(String name, SymbolInfo info) {
 		numberOfSymbols++;
-		currentScope.symbolTable.addSymbol(name, new SymbolInfo(info, numberOfSymbols));
+		if(info instanceof Str_Info) {
+			info.setID(numberOfSymbols);
+			currentScope.symbolTable.addSymbol(name, info);
+		}
+		else
+			currentScope.symbolTable.addSymbol(name, new SymbolInfo(info, numberOfSymbols));
 	}
 
 	public SymbolInfo retrieveSymbol(String name) {

@@ -1,11 +1,13 @@
 import java.io.IOException;
+import java.util.LinkedList;
+
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 public class Main {
-
+	
 	public static void main(String[] args) throws Exception {
 
 		if (args.length != 1) {
@@ -30,14 +32,18 @@ public class Main {
 		}
 
 		ScopeTree scopes = new SymbolTablesVisitor().visit(parseTree);
+		
 
 		IRCode irCode = new IRVisitor(scopes).visit(parseTree);
 
-		for (IRStatement irStatement : irCode) {
-			System.out.println(irStatement.toString());
+		
+		LinkedList<TinyStatement> TinyCode = new TinyCodeGenerator(scopes).generate(irCode);
+		
+		for (TinyStatement tinyStatement : TinyCode) {
+			System.out.println(tinyStatement.toString());
 		}
 		
-
+		
 	}
 
 }

@@ -7,3 +7,5 @@ antlr_outputs/
 out
 *.zip
 notes
+tiny
+*.log

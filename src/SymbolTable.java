@@ -43,6 +43,7 @@ public class SymbolTable {
 		}
 		return s;
 	}
+	
 }
 
 
@@ -64,8 +65,8 @@ class Symbol {
 }
 
 class SymbolInfo {
-	private char type;
-	private int ID;
+	protected char type;
+	protected int ID;
 	
 	
 	public SymbolInfo() {
@@ -113,7 +114,10 @@ class SymbolInfo {
 	public boolean isFloat() {
 		return type == 'f';
 	}
-
+	
+	public void setID(int ID) {
+		this.ID = ID;
+	}
 
 	public String getTypeName() {
 		String s;
@@ -140,8 +144,12 @@ class Str_Info extends SymbolInfo {
 	private String value;
 
 	public Str_Info(String value) {
-		setTypeToString();
+		type = 's';
 		this.value = value;
+	}
+	
+	public void setID(int ID) {
+		this.ID = ID;
 	}
 
 	public String getString() {

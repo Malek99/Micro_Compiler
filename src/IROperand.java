@@ -1,32 +1,32 @@
 import java.util.Hashtable;
 
-class Operand {
+class IROperand {
 	private char type;
 	private int value;
 	private float floatValue;
 	private boolean isInt;
 
-	private static Hashtable<Integer, String> labels;
-	private static Hashtable<Integer, String> symbolName;
+	public static Hashtable<Integer, String> labels;
+	public static Hashtable<Integer, String> symbolName;
 
-	public Operand() {
+	public IROperand() {
 		type = 'u'; // undefined
 		value = 0;
 		floatValue = 0;
 		isInt = false;
 	}
 	
-	public Operand(Operand operand) {
+	public IROperand(IROperand operand) {
 		copy(operand);
 	}
 	
 	
 	public static void setLabels(Hashtable<Integer, String> labels) {
-		Operand.labels = labels;
+		IROperand.labels = labels;
 	}
 
 	public static void setSymbolName(Hashtable<Integer, String> symbolName) {
-		Operand.symbolName = symbolName;
+		IROperand.symbolName = symbolName;
 	}
 
 
@@ -114,7 +114,7 @@ class Operand {
 	}
 
 	
-	public void copy(Operand operand) {
+	public void copy(IROperand operand) {
 		type = operand.type;
 		value = operand.value;
 		floatValue = operand.floatValue;

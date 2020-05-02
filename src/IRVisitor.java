@@ -6,10 +6,10 @@ public class IRVisitor extends MicroBaseVisitor<IRCode> {
 	private ScopeTree scopeTree;
 	private IRCode code;
 	private Hashtable<Integer, String> labels;
-	private Stack<Operand> operand1_st, operand2_st;
+	private Stack<IROperand> operand1_st, operand2_st;
 
 	private int tmpID, labelID;
-	private Operand operand1, operand2, result;
+	private IROperand operand1, operand2, result;
 	private IRStatement statement;
 	private boolean read;
 	
@@ -20,18 +20,18 @@ public class IRVisitor extends MicroBaseVisitor<IRCode> {
 		code = new IRCode();
 		tmpID = 0;
 		labelID = 0;
-		operand1 = new Operand();
-		operand2 = new Operand();
-		result = new Operand();
+		operand1 = new IROperand();
+		operand2 = new IROperand();
+		result = new IROperand();
 		statement = new IRStatement();
 		labels = new Hashtable<Integer, String>();
-		operand1_st = new Stack<Operand>();
-		operand2_st = new Stack<Operand>();
+		operand1_st = new Stack<IROperand>();
+		operand2_st = new Stack<IROperand>();
 	}
 
 	private void saveOperands() {
-		operand1_st.push(new Operand(operand1));
-		operand2_st.push(new Operand(operand2));
+		operand1_st.push(new IROperand(operand1));
+		operand2_st.push(new IROperand(operand2));
 	}
 
 	private void restoreOperands() {
@@ -110,8 +110,8 @@ public class IRVisitor extends MicroBaseVisitor<IRCode> {
 	public IRCode visitProgram(MicroParser.ProgramContext ctx) {
 		scopeTree.openRootScope();
 		visit(ctx.pgm_body().func_declarations());
-		Operand.setLabels(labels);
-		Operand.setSymbolName(scopeTree.getGlobalSymbols());
+		IROperand.setLabels(labels);
+		IROperand.setSymbolName(scopeTree.getGlobalSymbols());
 		return code;
 	}
 
